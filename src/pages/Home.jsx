@@ -184,7 +184,7 @@ export default function Home() {
           >
             <div className="image-overlay-gradient"></div>
             <img
-              src="public/detroithouse.jpg"
+              src="/detroithouse.jpg"
               alt="Detroit neighborhood"
             />
           </motion.div>

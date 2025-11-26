@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+// 1. Import the logo explicitly so Vite bundles it correctly for production
+import logoImg from "/Logo.png"; 
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,10 +37,10 @@ export default function Navbar() {
   return (
     <header className={scrolled ? "nav nav-scrolled" : "nav"}>
       <div className="nav-inner">
-        {/* BRAND / LOGO — no circle wrapper */}
+        {/* BRAND / LOGO */}
         <Link to="/" className="brand">
           <img
-            src="/Logo.png"
+            src={logoImg} /* 2. Use the imported variable here */
             alt="Initiative 2053"
             className="brand-logo"
           />
@@ -81,8 +83,9 @@ export default function Navbar() {
       </div>
 
       {/* MOBILE MENU OVERLAY */}
+      {/* 3. Added the "open" class below so CSS allows it to display: flex */}
       {open && (
-        <div className="nav-mobile-overlay" onClick={() => setOpen(false)}>
+        <div className="nav-mobile-overlay open" onClick={() => setOpen(false)}>
           <div
             className="nav-mobile-panel"
             onClick={(e) => e.stopPropagation()}

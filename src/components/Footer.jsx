@@ -11,7 +11,6 @@ export default function Footer() {
           {/* Brand + logo */}
           <div className="footer-brand">
             <div className="brand">
-              {/* ⬇️ swap /vite.svg with the same logo path you use in your Navbar */}
               <img
                 src="/Logo.png"
                 alt="Initiative 2053 logo"
