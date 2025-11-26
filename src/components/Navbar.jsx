@@ -38,7 +38,7 @@ export default function Navbar() {
         {/* BRAND / LOGO — no circle wrapper */}
         <Link to="/" className="brand">
           <img
-            src="src/assets/Logo.png"
+            src="/Logo.png"
             alt="Initiative 2053"
             className="brand-logo"
           />
