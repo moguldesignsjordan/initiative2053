@@ -1,90 +1,134 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import "../styles/home.css";
 
 /* ============================================================
-   FINAL — SMOOTH, NON-FLICKER MOTION PRESETS
-   ============================================================ */
+   SCROLL TRIGGERS — FIXED FOR LATENCY & SPACING
+============================================================ */
 
+// Trigger sections earlier
 const fadeUp = {
-  initial: { opacity: 0, y: 20 },
+  initial: { opacity: 0, y: 12 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.25 },
-  transition: { duration: 0.8, ease: "easeOut" },
+  viewport: { once: true, amount: 0.03 }, 
+  transition: {
+    type: "spring",
+    stiffness: 85,
+    damping: 16,
+    mass: 0.4,
+    ease: "easeOut",
+  },
 };
 
 const fadeSideLeft = {
-  initial: { opacity: 0, x: -20 },
+  initial: { opacity: 0, x: -40 },
   whileInView: { opacity: 1, x: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.85, ease: "easeOut" },
+  viewport: { once: true, amount: 0.2 },
+  transition: { type: "spring", stiffness: 100, damping: 20 },
 };
 
 const fadeSideRight = {
-  initial: { opacity: 0, x: 20 },
+  initial: { opacity: 0, x: 40 },
   whileInView: { opacity: 1, x: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.85, ease: "easeOut" },
+  viewport: { once: true, amount: 0.2 },
+  transition: { type: "spring", stiffness: 100, damping: 20 },
+};
+
+const imageFadeIn = {
+  initial: { opacity: 0, scale: 0.95 },
+  whileInView: { opacity: 1, scale: 1 },
+  viewport: { once: true, amount: 0.22 },
+  transition: { type: "spring", stiffness: 80, damping: 15 },
 };
 
 const staggerContainer = {
   initial: {},
-  whileInView: { transition: { staggerChildren: 0.12 }},
+  whileInView: { transition: { staggerChildren: 0.1 } },
 };
 
 /* ============================================================
-   REMOVE PARALLAX + REMOVE NOISE OVERLAY
-   ============================================================ */
+   HERO — CINEMATIC IMAGE-ONLY PARALLAX (SAFE + STABLE)
+============================================================ */
 
 export default function Home() {
+  const heroProgress = useMotionValue(0);
+
+  // Cinematic ONLY affects image + arrow, NEVER the whole hero
+  const imgOpacity = useTransform(heroProgress, [0, 900, 1800], [1, 1, 0]);
+  const imgY = useTransform(heroProgress, [0, 1400], [0, -40]);
+  const imgBlur = useTransform(heroProgress, [0, 900, 1800], ["0px", "0px", "10px"]);
+
+  const arrowOpacity = useTransform(heroProgress, [0, 600, 1500], [1, 1, 0]);
+  const arrowY = useTransform(heroProgress, [0, 300], [0, 12]);
+
+  useEffect(() => {
+    const update = () => heroProgress.set(window.scrollY || 0);
+    update(); // ensure safe initial values
+    window.addEventListener("scroll", update);
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+
   return (
     <div className="home">
 
-      {/* Removed noise-overlay to prevent page-wide flicker */}
-
       {/* ====================================================
-          HERO SECTION — NOW STATIC + STABLE
+          HERO — FIXED (Text static, image scrolls)
       ==================================================== */}
       <section className="hero">
 
-        <div className="hero-bg-glow"></div>
+        {/* Glow */}
+        <motion.div
+          className="hero-bg-glow"
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        />
 
+        {/* TEXT — always visible, never affected by scroll */}
         <motion.div
           className="hero-content"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
         >
-          <motion.div 
+
+          <motion.div
             className="kicker-badge"
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
             Detroit · Homeownership · 2053
           </motion.div>
 
           <h1 className="hero-title">
-            A Blueprint for Detroit's<br />
-            <span className="hero-highlight">Homeownership Revolution.</span>
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.5 }}
+            >
+              A Blueprint for Detroit’s <br/>
+              <span className="hero-highlight">Homeownership Revolution.</span>
+            </motion.span>
           </h1>
 
-          <motion.p 
+          <motion.p
             className="hero-subcopy"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
-            Initiative 2053 is a comprehensive model transforming Detroit renters
-            into sustainable homeowners through education, down-payment
-            assistance, and transparent accountability.
-          </motion.p>
-
-          <motion.div 
-            className="hero-ctas"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+          >
+            Initiative 2053 transforms Detroit renters into sustainable homeowners
+            through education, down-payment support, and transparent accountability.
+          </motion.p>
+
+          <motion.div
+            className="hero-ctas"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
           >
             <Link to="/detroiters" className="btn btn-primary shimmer-btn">
               I'm a Detroit Renter
@@ -95,32 +139,47 @@ export default function Home() {
           </motion.div>
         </motion.div>
 
-        {/* HERO IMAGE — NO PARALLAX, NO BLUR, GPU SAFE */}
-        <motion.div 
-          className="hero-image-wrapper"
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.1, ease: "easeOut" }}
-        >
-          <img
-            src="/Genfamily.png"
-            alt="Detroit Housing"
-            className="hero-img"
-            decoding="async"
-            loading="eager"
-            style={{ willChange: "transform", transform: "translateZ(0)" }}
-          />
 
-          <motion.div 
+        {/* IMAGE — cinematic scroll */}
+        <motion.div
+          className="hero-image-wrapper"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          style={{
+            opacity: imgOpacity,
+            y: imgY,
+            filter: imgBlur,
+            willChange: "transform, opacity, filter",
+          }}
+        >
+          <img src="/Genfamily.png" alt="Detroit Housing" className="hero-img"/>
+
+          <motion.div
             className="hero-float-card"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2 }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.4, duration: 0.5 }}
           >
             <span>Goal:</span>
             <strong>Generational Wealth</strong>
           </motion.div>
         </motion.div>
+
+
+        {/* Arrow — restored */}
+        <motion.div
+          className="scroll-indicator"
+          style={{
+            opacity: arrowOpacity,
+            y: arrowY,
+          }}
+          animate={{ y:[0,12,0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          ↓
+        </motion.div>
+
       </section>
 
 
@@ -133,14 +192,13 @@ export default function Home() {
           <motion.div {...fadeSideLeft}>
             <p className="kicker">The Problem</p>
             <h2>Detroit's Recovery Is Real — But Uneven.</h2>
-
             <p className="body-lg">
               Despite billions in reinvestment, Detroit's homeownership gap
               remains one of the widest in the country. Nearly half of residents
               rent — many paying more in rent than they would for a mortgage.
             </p>
 
-            <motion.div 
+            <motion.div
               className="stat-grid-mini"
               variants={staggerContainer}
               initial="initial"
@@ -170,38 +228,32 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          <motion.div 
-            className="image-box"
-            variants={fadeSideRight}
-          >
-            <img
-              src="/detroithouse.jpg"
-              alt="Detroit neighborhood"
-              decoding="async"
-              loading="lazy"
-              style={{ willChange: "transform", transform: "translateZ(0)" }}
-            />
+          <motion.div className="image-box" {...imageFadeIn}>
+            <img src="/renters.jpg" alt="Detroit neighborhood" loading="lazy" />
           </motion.div>
         </div>
       </motion.section>
 
 
-      {/* ====================================================
-          MODEL SECTION
-      ==================================================== */}
+      {/* MODEL SECTION */}
       <motion.section className="section model" {...fadeUp}>
         <div className="section-header-center">
           <p className="kicker">The Model</p>
           <h2>A 3-Pillar Pathway to Sustainable Homeownership.</h2>
         </div>
 
-        <motion.div 
+        <motion.div
           className="pillars-grid"
           variants={staggerContainer}
           initial="initial"
           whileInView="whileInView"
         >
-          <motion.div className="pillar-card" variants={fadeUp}>
+          <motion.div className="pillar-card" 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once:true }}
+            transition={{ duration: 0.6, type:"spring" }}
+          >
             <div className="pillar-icon">01</div>
             <h3>Education</h3>
             <p>
@@ -211,27 +263,34 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <motion.div className="pillar-card" variants={fadeUp}>
+          <motion.div className="pillar-card" 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once:true }}
+            transition={{ duration: 0.6, type:"spring" }}
+          >
             <div className="pillar-icon">02</div>
             <h3>Down-Payment Assistance</h3>
             <p>Targeted DPA grants help families close the affordability gap.</p>
           </motion.div>
 
-          <motion.div className="pillar-card" variants={fadeUp}>
+          <motion.div className="pillar-card" 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once:true }}
+            transition={{ duration: 0.6, type:"spring" }}
+          >
             <div className="pillar-icon">03</div>
             <h3>Accountability & Data</h3>
             <p>
-              Every participant is tracked through a compliance dashboard,
-              ensuring long-term transparency & stability.
+              Participants are tracked through a compliance dashboard for stability + transparency.
             </p>
           </motion.div>
         </motion.div>
       </motion.section>
 
 
-      {/* ====================================================
-          IMPACT SECTION
-      ==================================================== */}
+      {/* IMPACT SECTION */}
       <motion.section className="section impact" {...fadeUp}>
         <div className="section-header-center">
           <p className="kicker">Phase 1 — Proof of Concept</p>
@@ -244,40 +303,34 @@ export default function Home() {
           initial="initial"
           whileInView="whileInView"
         >
-          <motion.div className="impact-card" variants={fadeUp}>
+          <motion.div className="impact-card" {...fadeUp}>
             <span className="impact-value">100</span>
             <span className="impact-label">Families Served</span>
           </motion.div>
-          <motion.div className="impact-card" variants={fadeUp}>
+
+          <motion.div className="impact-card" {...fadeUp}>
             <span className="impact-value">$175k</span>
             <span className="impact-label">Avg. Home Value</span>
           </motion.div>
-          <motion.div className="impact-card" variants={fadeUp}>
+
+          <motion.div className="impact-card" {...fadeUp}>
             <span className="impact-value">$15k</span>
             <span className="impact-label">Avg. DPA Grant</span>
           </motion.div>
-          <motion.div className="impact-card" variants={fadeUp}>
+
+          <motion.div className="impact-card" {...fadeUp}>
             <span className="impact-value">&lt;1%</span>
             <span className="impact-label">Projected Default Rate</span>
           </motion.div>
         </motion.div>
 
-        <motion.div 
-          className="center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Link to="/impact" className="text-link large-link">
-            See Full Impact Data →
-          </Link>
+        <motion.div className="center" initial={{ opacity:0,y:10 }} whileInView={{ opacity:1,y:0 }} viewport={{ once:true }}>
+          <Link to="/impact" className="text-link large-link">See Full Impact Data →</Link>
         </motion.div>
       </motion.section>
 
 
-      {/* ====================================================
-          WHO WE SERVE
-      ==================================================== */}
+      {/* WHO WE SERVE */}
       <motion.section className="section audience" {...fadeUp}>
         <div className="section-header-center">
           <p className="kicker">Who We Serve</p>
@@ -290,34 +343,24 @@ export default function Home() {
           initial="initial"
           whileInView="whileInView"
         >
-          <motion.div className="audience-card" variants={fadeUp}>
+          <motion.div className="audience-card" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{once:true}}>
             <div className="img-wrap">
-              <img
-                src="/detroithomes.jpg"
-                alt="Detroit renters"
-                decoding="async"
-                loading="lazy"
-              />
+              <img src="/detroithomes.jpg" alt="Detroit renters" />
             </div>
             <div className="card-content">
-              <h3>Detroit Renters & First-Time Buyers</h3>
-              <p>A clear, supportive roadmap to affordable, sustainable homeownership.</p>
+              <h3>Detroit Renters</h3>
+              <p>A clear path to affordable, stable homeownership.</p>
               <Link to="/detroiters" className="text-link">Learn More →</Link>
             </div>
           </motion.div>
 
-          <motion.div className="audience-card" variants={fadeUp}>
+          <motion.div className="audience-card" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{once:true}}>
             <div className="img-wrap">
-              <img
-                src="/detroit.png"
-                alt="Partners"
-                decoding="async"
-                loading="lazy"
-              />
+              <img src="/development.jpg" alt="Partners" />
             </div>
             <div className="card-content">
-              <h3>Funders, Lenders & City Partners</h3>
-              <p>Transparent reporting, measurable outcomes, and sustainable community ROI.</p>
+              <h3>Funders & Partners</h3>
+              <p>Sustainable ROI, measurable impact, transparent reporting.</p>
               <Link to="/partners" className="text-link">Partner With Us →</Link>
             </div>
           </motion.div>
@@ -325,73 +368,57 @@ export default function Home() {
       </motion.section>
 
 
-      {/* ====================================================
-          LEADERSHIP
-      ==================================================== */}
+      {/* LEADERSHIP */}
       <motion.section className="section leadership" {...fadeUp}>
         <div className="section-grid">
-          
+
           <motion.div className="leadership-copy" {...fadeSideLeft}>
             <p className="kicker">Leadership</p>
             <h2 className="leadership-title">
               Led by Caring Hands & Practitioner Expertise.
             </h2>
-
             <p>
-              Initiative 2053 is powered by <strong>Caring Hands</strong>, a
-              Detroit-rooted nonprofit with deep experience in housing justice
-              and stabilization.
+              Initiative 2053 is powered by <strong>Caring Hands</strong>, a Detroit-rooted nonprofit with deep experience in housing stability.
             </p>
-
             <p>
-              Guided by <strong>Moe Lucas</strong>, Director of Housing & Financial Empowerment —
-              bringing 16+ years of mortgage & community finance leadership.
+              Guided by <strong>Moe Lucas</strong>, Director of Housing & Financial Empowerment.
             </p>
           </motion.div>
 
-          <motion.div
-            className="image-box leadership-photo"
-            variants={fadeSideRight}
-          >
-            <img
-              src="/moeant2.JPG"
-              alt="Leadership"
-              decoding="async"
-              loading="lazy"
-            />
+          <motion.div className="image-box leadership-photo" {...imageFadeIn}>
+            <img src="/moeant2.JPG" alt="Leadership" />
           </motion.div>
         </div>
       </motion.section>
 
 
-      {/* ====================================================
-          FINAL CTA
-      ==================================================== */}
+      {/* FINAL CTA */}
       <section className="section final-cta-wrapper">
         <div className="final-cta-bg"></div>
         <div className="final-cta-overlay"></div>
         <div className="final-cta-glow"></div>
 
         <div className="final-cta">
-          <h2 className="final-cta-title">
+          <motion.h2 className="final-cta-title" initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}}>
             Build the Future of Detroit Homeownership.
-          </h2>
+          </motion.h2>
 
-          <p className="final-cta-sub">
+          <motion.p className="final-cta-sub" initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}}>
             100 Families. $17M+ Equity Created.  
-            <br />Join the movement reshaping Detroit for generations.
-          </p>
+            <br/>Join the movement reshaping Detroit for generations.
+          </motion.p>
 
-          <div className="final-cta-buttons">
+          <motion.div className="final-cta-buttons" initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}}>
             <Link to="/contact" className="btn btn-primary shimmer-btn">
               Get Started
             </Link>
             <Link to="/partners" className="btn btn-outline">
               Partner With Us
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
+
     </div>
   );
 }

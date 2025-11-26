@@ -1,7 +1,3 @@
-/**************************************************
- * MOBILE-FIRST HOME STYLES
- **************************************************/
-
 /* ==========================================
    BASE & GLOBAL
 ========================================== */
@@ -19,17 +15,55 @@
 /* ==========================================
    SECTIONS - MOBILE FIRST
 ========================================== */
+
+/* HERO SECTION — tighten bottom so next section rises up sooner */
+.hero {
+  padding-top: 100px;    /* clean spacing under navbar */
+  padding-bottom: 40px;  /* was 20px, bumped slightly for balance */
+  position: relative;
+  z-index: 2;
+}
+
+/* UNIVERSAL SECTION BASE — mobile first */
 .home section {
-  padding: 60px 20px;
+  padding: 50px 20px;       /* was 60 → tighter, smoother scroll transitions */
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
   z-index: 2;
 }
 
+/* Centered headings */
 .section-center,
 .section-header-center {
   text-align: center;
+}
+
+
+/* ==========================================
+   TABLET & DESKTOP ADJUSTMENTS
+========================================== */
+
+@media (min-width: 600px) {
+  .hero {
+    padding-top: 130px;
+    padding-bottom: 60px;   /* smoother spacing on medium screens */
+  }
+
+  .home section {
+    padding: 70px 28px;     /* restore richer spacing on larger view */
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    padding-top: 150px;
+    padding-bottom: 70px;   /* refined spacing for desktop hero→section transition */
+  }
+
+  .home section {
+    padding: 90px 32px;
+  }
 }
 
 /* ==========================================
@@ -887,4 +921,38 @@
 .final-cta .btn-outline span,
 .final-cta .btn-outline p {
   color: #fff !important;
+}
+.hero {
+  padding-top: 90px;
+  padding-bottom: 20px;  /* was 40 → now even tighter */
+  position: relative;
+  z-index: 2;
+}
+
+.home section {
+  padding: 42px 20px; /* was 50 – tighter & immediate */
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 600px) {
+  .hero {
+    padding-top: 120px;
+    padding-bottom: 30px;
+  }
+  .home section {
+    padding: 60px 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    padding-top: 140px;
+    padding-bottom: 40px; /* still tighter than original */
+  }
+  .home section {
+    padding: 80px 32px;
+  }
 }
