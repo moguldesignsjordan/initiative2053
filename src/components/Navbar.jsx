@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-// 1. Import the logo explicitly so Vite bundles it correctly for production
-import logoImg from "/Logo.png"; 
+import logoImg from "/Logo.png";
 
-export default function Navbar() {
+export default function Navbar({ theme, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
   // Scroll listener for blur / background change
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 10);
     onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
@@ -27,20 +24,20 @@ export default function Navbar() {
 
   const links = [
     { label: "Home", to: "/" },
-    { label: "Model", to: "/model" },
+    { label: "About", to: "/about" },
     { label: "Impact", to: "/impact" },
     { label: "Detroiters", to: "/detroiters" },
     { label: "Partners", to: "/partners" },
-    { label: "About", to: "/about" },
   ];
 
   return (
     <header className={scrolled ? "nav nav-scrolled" : "nav"}>
       <div className="nav-inner">
+
         {/* BRAND / LOGO */}
         <Link to="/" className="brand">
           <img
-            src={logoImg} /* 2. Use the imported variable here */
+            src={logoImg}
             alt="Initiative 2053"
             className="brand-logo"
           />
@@ -66,30 +63,66 @@ export default function Navbar() {
           <Link to="/detroiters" className="btn btn-primary nav-cta">
             Get Started
           </Link>
+
+          {/* DESKTOP THEME TOGGLE */}
+          <button
+            type="button"
+            className="nav-theme-toggle"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
+            <div className="toggle-track">
+              <div
+                className={
+                  theme === "light" ? "toggle-thumb light" : "toggle-thumb"
+                }
+              />
+            </div>
+          </button>
         </nav>
 
-        {/* MOBILE TOGGLE */}
-        <button
-          className="nav-toggle"
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle navigation menu"
-          aria-expanded={open}
-        >
-          <span className={open ? "nav-toggle-bar open" : "nav-toggle-bar"} />
-          <span className={open ? "nav-toggle-bar open" : "nav-toggle-bar"} />
-          <span className={open ? "nav-toggle-bar open" : "nav-toggle-bar"} />
-        </button>
+        {/* MOBILE HEADER CONTROLS (theme toggle + hamburger) */}
+        <div className="nav-mobile-controls">
+          {/* MOBILE THEME TOGGLE IN HEADER */}
+          <button
+            type="button"
+            className="nav-theme-toggle mobile-header-toggle"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
+            <div className="toggle-track">
+              <div
+                className={
+                  theme === "light" ? "toggle-thumb light" : "toggle-thumb"
+                }
+              />
+            </div>
+          </button>
+
+          {/* HAMBURGER BUTTON */}
+          <button
+            className="nav-toggle"
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={open}
+          >
+            <span className={open ? "nav-toggle-bar open" : "nav-toggle-bar"} />
+            <span className={open ? "nav-toggle-bar open" : "nav-toggle-bar"} />
+            <span className={open ? "nav-toggle-bar open" : "nav-toggle-bar"} />
+          </button>
+        </div>
+
       </div>
 
       {/* MOBILE MENU OVERLAY */}
-      {/* 3. Added the "open" class below so CSS allows it to display: flex */}
       {open && (
         <div className="nav-mobile-overlay open" onClick={() => setOpen(false)}>
           <div
             className="nav-mobile-panel"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* MOBILE LINKS */}
             <div className="nav-mobile-links">
               {links.map((link) => (
                 <NavLink
@@ -105,6 +138,7 @@ export default function Navbar() {
               ))}
             </div>
 
+            {/* MOBILE CTAS + THEME TOGGLE */}
             <div className="nav-mobile-ctas">
               <Link
                 to="/contact"
@@ -120,6 +154,24 @@ export default function Navbar() {
               >
                 Get Started
               </Link>
+
+              {/* MOBILE THEME TOGGLE (inside the menu) */}
+              <button
+                type="button"
+                className="nav-theme-toggle mobile-toggle"
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+              >
+                <div className="toggle-track">
+                  <div
+                    className={
+                      theme === "light"
+                        ? "toggle-thumb light"
+                        : "toggle-thumb"
+                    }
+                  />
+                </div>
+              </button>
             </div>
           </div>
         </div>

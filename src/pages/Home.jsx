@@ -141,7 +141,7 @@ export default function Home() {
             <p className="body-lg">
               Despite billions in reinvestment, Detroit's homeownership gap
               remains one of the widest in the country. Nearly half of residents
-              rent — many paying more in rent than they would for a mortgage.
+              rent many paying more in rent than they would for a mortgage.
             </p>
 
             <motion.div 
@@ -366,7 +366,7 @@ export default function Home() {
 
             <p>
               The program is guided by <strong>Moe Lucas</strong>, Director of
-              Housing & Financial Empowerment — bringing 16+ years in mortgages,
+              Housing & Financial Empowerment  bringing 16+ years in mortgages,
               real estate investing, and community-centered financial
               empowerment.
             </p>
@@ -389,34 +389,30 @@ export default function Home() {
       </motion.section>
 
 
-      {/* ================================
-          FINAL CTA
-      =================================*/}
-      <motion.section className="section final-cta-wrapper" {...fadeUp}>
-        <motion.div
-          className="final-cta"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="cta-content">
-            <h2>Detroit's Future Belongs to Detroiters.</h2>
-            <p>Join the movement to build generational wealth through ownership.</p>
+{/* ================================
+    FINAL CTA (UPGRADED)
+=================================*/}
+<section className="section final-cta-wrapper">
+  <div className="final-cta-bg"></div>
+  <div className="final-cta-overlay"></div>
+  <div className="final-cta-glow"></div>
 
-            <div className="hero-ctas">
-                <Link to="/detroiters" className="btn btn-primary shimmer-btn">
-                Start My Journey
-                </Link>
-                <Link to="/partners" className="btn btn-outline">
-                Become a Partner
-                </Link>
-            </div>
-          </div>
-          {/* Decorative Grid on CTA */}
-          <div className="cta-grid-bg"></div>
-        </motion.div>
-      </motion.section>
+  <div className="final-cta">
+    <h2 className="final-cta-title">
+      Build the Future of Detroit Homeownership.
+    </h2>
+
+    <p className="final-cta-sub">
+      100 Families. $17M+ Equity Created.  
+      <br />Join the movement reshaping Detroit for generations.
+    </p>
+
+    <div className="final-cta-buttons">
+      <Link to="/contact" className="btn btn-primary shimmer-btn">Get Started</Link>
+      <Link to="/partners" className="btn btn-outline">Partner With Us</Link>
+    </div>
+  </div>
+</section>
 
     </div>
   );

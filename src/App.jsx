@@ -12,16 +12,20 @@ import Partners from "./pages/Partners";
 import Detroiters from "./pages/Detroiters";
 import Contact from "./pages/Contact";
 
-/**
- * App with global light/dark theme
- */
 export default function App() {
   const [loading, setLoading] = useState(true);
 
-  // Read stored theme or default to dark
+  // Detect system theme on first load UNLESS user has manually chosen
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return "dark";
-    return localStorage.getItem("initiative2053-theme") || "dark";
+
+    const saved = localStorage.getItem("initiative2053-theme");
+    if (saved) return saved;
+
+    // System preference
+    return window.matchMedia("(prefers-color-scheme: light)").matches
+      ? "light"
+      : "dark";
   });
 
   // Fake loader
@@ -30,22 +34,21 @@ export default function App() {
     return () => clearTimeout(t);
   }, []);
 
-  // Apply theme to <html> and persist
+  // Apply theme globally
   useEffect(() => {
-    if (typeof document === "undefined") return;
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("initiative2053-theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => {
+  const toggleTheme = () =>
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
 
   if (loading) return <Loader />;
 
   return (
     <>
-      <Navbar />
+      {/* pass theme + toggle to Navbar */}
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
 
       <main className="site-main">
         <Routes>
@@ -60,21 +63,6 @@ export default function App() {
       </main>
 
       <Footer />
-
-      {/* THEME TOGGLE – fixed bottom-right, subtle */}
-      <button
-        type="button"
-        className="theme-toggle"
-        onClick={toggleTheme}
-        aria-label="Toggle light and dark mode"
-      >
-        <span className="theme-toggle-track">
-          <span className="theme-toggle-thumb" />
-        </span>
-        <span className="theme-toggle-label">
-          {theme === "dark" ? "Dark" : "Light"}
-        </span>
-      </button>
     </>
   );
 }
