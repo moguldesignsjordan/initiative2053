@@ -41,7 +41,7 @@ export default function Partners() {
         <h2>Your partnership strengthens Detroit’s long-term stability.</h2>
 
         <p className="body-lg" style={{ maxWidth: "760px" }}>
-          Detroit renters face steep barriers to ownership — credit readiness,
+          Detroit renters face steep barriers to ownership credit readiness,
           low savings, and limited navigation support.  
           With your partnership, we shorten the path to readiness and provide
           families with education, down-payment support, and transparent
@@ -163,7 +163,7 @@ export default function Partners() {
       =================================*/}
       <motion.section className="section section-center" {...fadeUp}>
         <h2 style={{ marginBottom: "20px" }}>
-          Let’s Build a Stronger Detroit — Together.
+          Let’s Build a Stronger Detroit Together.
         </h2>
 
         <p className="body-lg" style={{ maxWidth: "700px", marginBottom: "32px" }}>

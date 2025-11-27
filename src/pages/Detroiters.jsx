@@ -27,7 +27,7 @@ export default function Detroiters() {
           Initiative 2053 gives Detroit renters a realistic, accessible, 
           fully-supported path to homeownership.  
           Education, down-payment support, credit strengthening, 
-          and hands-on guidance — all in one place.
+          and hands-on guidance all in one place.
         </p>
       </motion.section>
 
@@ -41,7 +41,7 @@ export default function Detroiters() {
 
         <p className="body-lg" style={{ maxWidth: "760px" }}>
           Detroiters are paying an average of <strong>$1,103/month</strong>  
-          for rent — while the average mortgage in the city is only  
+          for rent while the average mortgage in the city is only  
           <strong>$910/month</strong>.  
           That gap forces families to rent longer and delays wealth-building.
         </p>
@@ -91,7 +91,7 @@ export default function Detroiters() {
             <h3>3. Ongoing Support & Stability</h3>
             <p>
               After purchase, families receive support, coaching, and community
-              resources to stay stable — reducing the default rate to under 1%.
+              resources to stay stable reducing the default rate to under 1%.
             </p>
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function Detroiters() {
           <div className="pillar-card">
             <h3>4. Become a Homeowner</h3>
             <p>
-              You purchase a home with confidence — and with community and data-backed
+              You purchase a home with confidence and with community and data-backed
               support for long-term stability.
             </p>
           </div>
