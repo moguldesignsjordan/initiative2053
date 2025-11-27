@@ -15,68 +15,59 @@ import Contact from "./pages/Contact";
 export default function App() {
   const [loading, setLoading] = useState(true);
 
-  /* ============================================================
-     THEME: SYSTEM + MANUAL OVERRIDE
-  ============================================================ */
-
+  // Detect system theme + user override
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return "dark";
 
-    // Manual overrides come first
     const saved = localStorage.getItem("initiative2053-theme");
     if (saved) return saved;
 
-    // Otherwise detect system preference
     return window.matchMedia("(prefers-color-scheme: light)").matches
       ? "light"
       : "dark";
   });
 
-  // Apply theme to <html data-theme="">
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("initiative2053-theme", theme);
-  }, [theme]);
-
-  // 🔥 NEW — Detect system theme changes live (Auto mode)
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: light)");
-
-    const handleChange = (e) => {
-      const saved = localStorage.getItem("initiative2053-theme");
-
-      // Only auto-update if user has NOT manually overridden the theme
-      if (!saved) {
-        setTheme(e.matches ? "light" : "dark");
-      }
-    };
-
-    mq.addEventListener("change", handleChange);
-    return () => mq.removeEventListener("change", handleChange);
-  }, []);
-
-  // Toggle theme manually
-  const toggleTheme = () =>
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-
-  /* ============================================================
-     INITIAL LOADER
-  ============================================================ */
-
+  // Fake loader
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 1800);
     return () => clearTimeout(t);
   }, []);
 
-  if (loading) return <Loader />;
+  // Apply theme globally
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("initiative2053-theme", theme);
+  }, [theme]);
 
-  /* ============================================================
-     APP LAYOUT
-  ============================================================ */
+  // 🔥 LIVE SYSTEM THEME SYNC
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");
+
+    const handleSystemChange = (e) => {
+      const saved = localStorage.getItem("initiative2053-theme");
+      // Only auto-change if user has NOT manually chosen a theme
+      if (!saved) {
+        setTheme(e.matches ? "light" : "dark");
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleSystemChange);
+    return () => mediaQuery.removeEventListener("change", handleSystemChange);
+  }, []);
+
+  const toggleTheme = () => {
+    // Manual override — user preference wins over system
+    setTheme((prev) => {
+      const next = prev === "dark" ? "light" : "dark";
+      localStorage.setItem("initiative2053-theme", next);
+      return next;
+    });
+  };
+
+  if (loading) return <Loader />;
 
   return (
     <>
-      {/* Navbar receives theme + toggle */}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
 
       <main className="site-main">
