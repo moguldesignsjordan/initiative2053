@@ -827,3 +827,79 @@ a {
 
 }
 
+/* ================================================
+   MOBILE FLICKER FIX (Safari + Chrome Android)
+=================================================== */
+
+@media (max-width: 768px) {
+  /* Stop mobile GPU re-render bugs */
+  * {
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+
+  /* Especially for Framer Motion elements */
+  img, .hero-image-wrapper, .pillar-card, .impact-card, .stat-item {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
+  /* Remove filter animation on mobile (causes 90% of flicker) */
+  .hero-image-wrapper {
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+}
+/* ============================
+   CONTACT FORM
+============================ */
+.contact-form-wrapper {
+  max-width: 650px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  padding: 40px 32px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: var(--muted);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  font-size: 1rem;
+  color: var(--text);
+  transition: border-color 0.25s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button[type="submit"] {
+  margin-top: 10px;
+  width: 100%;
+}
