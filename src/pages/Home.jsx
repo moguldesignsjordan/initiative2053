@@ -7,11 +7,10 @@ import "../styles/home.css";
    SCROLL TRIGGERS — FIXED FOR LATENCY & SPACING
 ============================================================ */
 
-// Trigger sections earlier
 const fadeUp = {
   initial: { opacity: 0, y: 12 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.03 }, 
+  viewport: { once: true, amount: 0.03 },
   transition: {
     type: "spring",
     stiffness: 85,
@@ -48,13 +47,13 @@ const staggerContainer = {
 };
 
 /* ============================================================
-   HERO — CINEMATIC IMAGE-ONLY PARALLAX (SAFE + STABLE)
+   HERO — CINEMATIC PARALLAX WITH iPHONE-SAFE FIXES
 ============================================================ */
 
 export default function Home() {
   const heroProgress = useMotionValue(0);
 
-  // Cinematic ONLY affects image + arrow, NEVER the whole hero
+  // Desktop parallax transforms
   const imgOpacity = useTransform(heroProgress, [0, 900, 1800], [1, 1, 0]);
   const imgY = useTransform(heroProgress, [0, 1400], [0, -40]);
   const imgBlur = useTransform(heroProgress, [0, 900, 1800], ["0px", "0px", "10px"]);
@@ -62,19 +61,20 @@ export default function Home() {
   const arrowOpacity = useTransform(heroProgress, [0, 600, 1500], [1, 1, 0]);
   const arrowY = useTransform(heroProgress, [0, 300], [0, 12]);
 
+  const isMobile = window.innerWidth <= 768;
+
   useEffect(() => {
     const update = () => heroProgress.set(window.scrollY || 0);
-    update(); // ensure safe initial values
+    update();
     window.addEventListener("scroll", update);
     return () => window.removeEventListener("scroll", update);
   }, []);
-
 
   return (
     <div className="home">
 
       {/* ====================================================
-          HERO — FIXED (Text static, image scrolls)
+          HERO — FIXED TEXT + MOBILE-SAFE IMAGE PARALLAX
       ==================================================== */}
       <section className="hero">
 
@@ -86,14 +86,13 @@ export default function Home() {
           transition={{ duration: 1.5, ease: "easeOut" }}
         />
 
-        {/* TEXT — always visible, never affected by scroll */}
+        {/* TEXT */}
         <motion.div
           className="hero-content"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
-
           <motion.div
             className="kicker-badge"
             initial={{ opacity: 0, scale: 0.85 }}
@@ -109,7 +108,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.5 }}
             >
-              A Blueprint for Detroit’s <br/>
+              A Blueprint for Detroit’s <br />
               <span className="hero-highlight">Homeownership Revolution.</span>
             </motion.span>
           </h1>
@@ -139,21 +138,36 @@ export default function Home() {
           </motion.div>
         </motion.div>
 
-
-        {/* IMAGE — cinematic scroll */}
+        {/* =============================
+            IMAGE — MOBILE-FLICKER FIX
+        ============================== */}
         <motion.div
           className="hero-image-wrapper"
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           style={{
-            opacity: imgOpacity,
+            // MOBILE = NO OPACITY/BLUR ANIMATION
+            opacity: isMobile ? 1 : imgOpacity,
             y: imgY,
-            filter: imgBlur,
-            willChange: "transform, opacity, filter",
+            filter: isMobile ? "none" : imgBlur,
+
+            // GPU stability
+            willChange: "transform",
+            WebkitTransform: "translateZ(0)",
+            WebkitBackfaceVisibility: "hidden",
+            backfaceVisibility: "hidden",
           }}
         >
-          <img src="/Genfamily.png" alt="Detroit Housing" className="hero-img"/>
+          <img
+            src="/Genfamily.png"
+            alt="Detroit Housing"
+            className="hero-img"
+            style={{
+              WebkitTransform: "translateZ(0)",
+              backfaceVisibility: "hidden",
+            }}
+          />
 
           <motion.div
             className="hero-float-card"
@@ -166,22 +180,19 @@ export default function Home() {
           </motion.div>
         </motion.div>
 
-
-        {/* Arrow — restored */}
+        {/* Arrow */}
         <motion.div
           className="scroll-indicator"
           style={{
-            opacity: arrowOpacity,
+            opacity: isMobile ? 1 : arrowOpacity,
             y: arrowY,
           }}
-          animate={{ y:[0,12,0] }}
+          animate={{ y: [0, 12, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
           ↓
         </motion.div>
-
       </section>
-
 
       {/* ====================================================
           PROBLEM SECTION

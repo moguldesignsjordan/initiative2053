@@ -15,6 +15,14 @@
 /* ==========================================
    SECTIONS - MOBILE FIRST
 ========================================== */
+.hero-image-wrapper,
+.hero-img {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+}
+
 
 /* HERO SECTION — tighten bottom so next section rises up sooner */
 .hero {
