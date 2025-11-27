@@ -717,3 +717,21 @@ button[type="submit"] {
     padding-top: 90px;
   }
 }
+/* MOBILE — clean footer bottom spacing */
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 6px; /* tighter spacing between lines */
+    padding-top: 10px;
+  }
+
+  .footer-bottom p {
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .footer-credit {
+    margin-top: 4px;
+  }
+}
