@@ -1,0 +1,103 @@
+/* ABOUT PAGE SPECIFIC ****************************/
+
+/* Global section rhythm for About (tighter than default) */
+.about-page .section {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+/* Top hero a little closer to nav + next section */
+.about-hero .hero-title,
+.about-hero .about-intro {
+  max-width: 800px; /* same container */
+}
+.about-mission {
+  padding-top: 32px;
+}
+
+/* Intro / body widths */
+.about-intro,
+.about-text {
+  max-width: 760px;
+}
+
+/* Pillars */
+.about-pillars {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  margin-top: 40px;
+}
+
+@media (min-width: 900px) {
+  .about-pillars {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+/* Leadership layout */
+.about-leadership-grid {
+  gap: 40px;
+}
+
+@media (min-width: 900px) {
+  .about-leadership-grid {
+    gap: 70px;
+  }
+}
+
+.about-leadership-text p {
+  margin-bottom: 18px;
+}
+
+.about-leadership-photo {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.about-leadership-photo img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* CTA */
+.about-cta-text {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 32px;
+}
+
+/* Buttons row (rest is already in global.css) */
+.about-cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.about-cta-buttons .btn {
+  min-width: 230px;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .about-page .section {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .about-cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .about-cta-buttons .btn {
+    width: 100%;
+    max-width: 320px;
+  }
+}
