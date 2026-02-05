@@ -40,10 +40,10 @@ export default function Academy() {
     e.preventDefault();
     setSending(true);
 
-    // REPLACE THESE VALUES WITH YOUR EMAILJS KEYS
-    const SERVICE_ID = "YOUR_SERVICE_ID";
-    const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-    const PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+    // ✅ YOUR KEYS ARE NOW INTEGRATED HERE
+    const SERVICE_ID = "service_sctkfus";
+    const TEMPLATE_ID = "template_rmtxlld";
+    const PUBLIC_KEY = "R8kPJcOdTEon5BjkC";
 
     emailjs
       .sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
