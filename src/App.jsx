@@ -11,17 +11,19 @@ import Impact from "./pages/Impact";
 import Partners from "./pages/Partners";
 import Detroiters from "./pages/Detroiters";
 import Contact from "./pages/Contact";
+import Academy from "./pages/Academy"; // ✅ NEW
 
 export default function App() {
   const [loading, setLoading] = useState(true);
 
-  // Detect system theme + user override
+  // Detect system theme on first load UNLESS user has manually chosen
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return "dark";
 
     const saved = localStorage.getItem("initiative2053-theme");
     if (saved) return saved;
 
+    // System preference
     return window.matchMedia("(prefers-color-scheme: light)").matches
       ? "light"
       : "dark";
@@ -39,35 +41,14 @@ export default function App() {
     localStorage.setItem("initiative2053-theme", theme);
   }, [theme]);
 
-  // 🔥 LIVE SYSTEM THEME SYNC
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");
-
-    const handleSystemChange = (e) => {
-      const saved = localStorage.getItem("initiative2053-theme");
-      // Only auto-change if user has NOT manually chosen a theme
-      if (!saved) {
-        setTheme(e.matches ? "light" : "dark");
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleSystemChange);
-    return () => mediaQuery.removeEventListener("change", handleSystemChange);
-  }, []);
-
-  const toggleTheme = () => {
-    // Manual override — user preference wins over system
-    setTheme((prev) => {
-      const next = prev === "dark" ? "light" : "dark";
-      localStorage.setItem("initiative2053-theme", next);
-      return next;
-    });
-  };
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
 
   if (loading) return <Loader />;
 
   return (
     <>
+      {/* pass theme + toggle to Navbar */}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
 
       <main className="site-main">
@@ -78,6 +59,7 @@ export default function App() {
           <Route path="/impact" element={<Impact />} />
           <Route path="/partners" element={<Partners />} />
           <Route path="/detroiters" element={<Detroiters />} />
+          <Route path="/academy" element={<Academy />} /> {/* ✅ NEW */}
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
