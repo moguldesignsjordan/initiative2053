@@ -108,8 +108,8 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.5 }}
             >
-              A Blueprint for Detroit’s <br />
-              <span className="hero-highlight">Homeownership Revolution.</span>
+            The Housing Affordability Crisis <br />
+              <span className="hero-highlight">Is Eroding Black Wealth In Real Time</span>
             </motion.span>
           </h1>
 
@@ -130,10 +130,10 @@ export default function Home() {
             transition={{ delay: 1 }}
           >
             <Link to="/detroiters" className="btn btn-primary shimmer-btn">
-              I'm a Detroit Renter
+              Start the Pre-Approval Academy
             </Link>
             <Link to="/partners" className="btn btn-outline">
-              Partnership Opportunities
+              Why This Matters
             </Link>
           </motion.div>
         </motion.div>
@@ -194,56 +194,67 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ====================================================
-          PROBLEM SECTION
-      ==================================================== */}
-      <motion.section className="section problem" {...fadeUp}>
-        <div className="section-grid">
+{/* ====================================================
+    PROBLEM SECTION
+==================================================== */}
+<motion.section className="section problem" {...fadeUp}>
+  <div className="section-grid">
+    <motion.div {...fadeSideLeft}>
+      <p className="kicker">The Problem</p>
+      <h2>This Crisis Affects Us All But Not in the Same Way</h2>
+      <p className="body-lg">
+        Despite billions in reinvestment, Detroit&apos;s homeownership gap remains
+        one of the widest in the country. Nearly half of residents rent — many
+        paying more in rent than they would for a mortgage.
+      </p>
 
-          <motion.div {...fadeSideLeft}>
-            <p className="kicker">The Problem</p>
-            <h2>Detroit's Recovery Is Real — But Uneven.</h2>
-            <p className="body-lg">
-              Despite billions in reinvestment, Detroit's homeownership gap
-              remains one of the widest in the country. Nearly half of residents
-              rent — many paying more in rent than they would for a mortgage.
-            </p>
+      <motion.div
+        className="stat-grid-mini"
+        variants={staggerContainer}
+        initial="initial"
+        whileInView="whileInView"
+      >
+        <motion.div className="stat-item" variants={fadeUp}>
+          <span className="stat-number">~50%</span>
+          <span className="stat-desc">Homeownership Rate</span>
+        </motion.div>
 
-            <motion.div
-              className="stat-grid-mini"
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="whileInView"
-            >
-              <motion.div className="stat-item" variants={fadeUp}>
-                <span className="stat-number">~50%</span>
-                <span className="stat-desc">Homeownership Rate</span>
-              </motion.div>
-              <motion.div className="stat-item" variants={fadeUp}>
-                <span className="stat-number">57%</span>
-                <span className="stat-desc">Renters Cost-Burdened</span>
-              </motion.div>
-              <motion.div className="stat-item full-width" variants={fadeUp}>
-                <div className="comparison-bar">
-                  <div>
-                    <span className="label">Avg Rent</span>
-                    <span className="val bad">$1,103</span>
-                  </div>
-                  <div className="vs">vs</div>
-                  <div>
-                    <span className="label">Avg Mortgage</span>
-                    <span className="val good">$910</span>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+        <motion.div className="stat-item" variants={fadeUp}>
+          <span className="stat-number">57%</span>
+          <span className="stat-desc">Renters Cost-Burdened</span>
+        </motion.div>
 
-          <motion.div className="image-box" {...imageFadeIn}>
-            <img src="/renters.jpg" alt="Detroit neighborhood" loading="lazy" />
-          </motion.div>
-        </div>
-      </motion.section>
+        <motion.div className="stat-item full-width" variants={fadeUp}>
+          <div className="comparison-bar">
+            <div>
+              <span className="label">Avg Rent</span>
+              <span className="val bad">$1,103</span>
+            </div>
+            <div className="vs">vs</div>
+            <div>
+              <span className="label">Avg Mortgage</span>
+              <span className="val good">$910</span>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
+
+    {/* Right side: YouTube-style 16:9 video (full frame visible) */}
+    <motion.div className="video-box" {...imageFadeIn}>
+      <div className="video-frame">
+        <video
+          className="media-video"
+          src="/academy-intro.mp4"
+          controls
+          playsInline
+          preload="metadata"
+          aria-label="Initiative 2053 introduction video"
+        />
+      </div>
+    </motion.div>
+  </div>
+</motion.section>
 
 
       {/* MODEL SECTION */}
