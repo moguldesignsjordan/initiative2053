@@ -178,7 +178,7 @@ export default function About() {
           <div className="pillar-card">
             <div className="pillar-icon">01</div>
             <h3>"Not ready" — with no roadmap</h3>
-            <p>Too many families are told they are "not ready" — without being told <em>how</em> to become ready.</p>
+            <p>Too many families are told they are "not ready" without being told <em>how</em> to become ready.</p>
           </div>
 
           <div className="pillar-card">
@@ -476,32 +476,6 @@ export default function About() {
           Initiative 2053 is not personality-driven.<br />
           <strong>It is driven by structure, stewardship, and outcomes.</strong>
         </p>
-      </motion.section>
-
-      {/* ================================
-          CTA
-      =================================*/}
-      <motion.section className="section section-center" {...fadeUp}>
-        <p className="kicker">#Initiative2053</p>
-        <h2 style={{ marginBottom: "20px" }}>Detroit's Future Belongs to Detroiters.</h2>
-
-        <p className="body-lg" style={{ maxWidth: "700px", marginBottom: "10px" }}>
-          <strong>Education first. Preparation next. Ownership that lasts.</strong>
-        </p>
-
-        <p className="body-lg" style={{ maxWidth: "700px", marginBottom: "32px" }}>
-          Join the growing movement to expand homeownership, 
-          build equity, and create generational wealth for Detroit families.
-        </p>
-
-        <div className="hero-ctas hero-ctas-center">
-          <a href="/detroiters" className="btn btn-primary">
-            For Detroit Families
-          </a>
-          <a href="/partners" className="btn btn-outline">
-            For Partners & Funders
-          </a>
-        </div>
       </motion.section>
 
     </div>
