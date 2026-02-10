@@ -24,9 +24,9 @@ export default function Navbar({ theme, toggleTheme }) {
   const links = [
     { label: "Home", to: "/" },
     { label: "About", to: "/about" },
-    { label: "Impact", to: "/impact" },
-    { label: "Detroiters", to: "/detroiters" },
+    { label: "Academy", to: "/academy" },
     { label: "Partners", to: "/partners" },
+    
   ];
 
   return (

@@ -605,3 +605,99 @@ img {
   .academy-promo-grid    { grid-template-columns: 1fr; }
   .video-frame           { border-radius: 16px; }
 }
+/* ==========================================================
+   ABOUT / TEAM CARDS
+   (Used on About page — keeps styling consistent across themes)
+========================================================== */
+
+.team-grid {
+  align-items: stretch;
+}
+
+.team-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.team-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.team-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(251, 191, 36, 0.18), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border-subtle);
+  flex: 0 0 auto;
+}
+
+.team-headings {
+  min-width: 0;
+}
+
+.team-name {
+  margin: 0;
+}
+
+.team-title {
+  margin: 4px 0 0;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.team-org {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.35;
+  opacity: 0.85;
+}
+
+.team-site {
+  display: inline-flex;
+  margin-top: 10px;
+  font-size: 0.92rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.team-site:hover {
+  text-decoration: underline;
+}
+
+.team-bio {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 0.98rem;
+}
+
+.team-photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+}
+
+.team-photo img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  opacity: 0.92;
+}
+
+@media (min-width: 900px) {
+  .team-photo img {
+    height: 220px;
+  }
+}
