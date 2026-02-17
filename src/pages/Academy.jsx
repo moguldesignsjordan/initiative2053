@@ -1,5 +1,7 @@
 import { useMemo, useState, useRef } from "react";
-import emailjs from "@emailjs/browser"; // Import EmailJS
+import emailjs from "@emailjs/browser";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";
 import { motion } from "framer-motion";
 import {
   CheckCircle2,
@@ -27,8 +29,8 @@ const fadeUp = {
 
 export default function Academy() {
   const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false); // New loading state
-  const formRef = useRef(); // Reference to the form
+  const [sending, setSending] = useState(false);
+  const formRef = useRef();
 
   const videoSrc = useMemo(() => {
     const base = import.meta.env.BASE_URL || "/";
@@ -36,29 +38,47 @@ export default function Academy() {
     return `${cleanBase}academy-intro.mp4`;
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
 
-    // ✅ YOUR KEYS ARE NOW INTEGRATED HERE
-    const SERVICE_ID = "service_sctkfus";
-    const TEMPLATE_ID = "template_rmtxlld";
-    const PUBLIC_KEY = "R8kPJcOdTEon5BjkC";
+    const formData = new FormData(formRef.current);
+    const applicationData = {
+      name: formData.get("user_name"),
+      email: formData.get("user_email"),
+      phone: formData.get("user_phone"),
+      status: formData.get("user_status"),
+      timeline: formData.get("user_timeline"),
+      message: formData.get("message") || "",
+      submittedAt: serverTimestamp(),
+    };
 
-    emailjs
-      .sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
-      .then(
-        (result) => {
-          console.log("Email sent:", result.text);
-          setSubmitted(true);
-          setSending(false);
-        },
-        (error) => {
-          console.error("Email error:", error.text);
-          alert("Failed to send application. Please try again.");
-          setSending(false);
-        }
-      );
+    // EmailJS credentials
+    const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    try {
+      // 1. Save to Firestore (primary — persistent record)
+      await addDoc(collection(db, "academy-applications"), applicationData);
+      console.log("Firestore: application saved");
+
+      // 2. Send email notification (secondary — so you get an alert)
+      try {
+        await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY);
+        console.log("EmailJS: notification sent");
+      } catch (emailErr) {
+        // Email failure is non-critical — Firestore already has the data
+        console.warn("EmailJS failed (data is safe in Firestore):", emailErr);
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Submission error:", err);
+      alert("Failed to send application. Please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -80,7 +100,7 @@ export default function Academy() {
             <p className="academy-body-lg">
               The Pre-Approval Academy is the participant entry point into Initiative 2053.
               It was built for people who are tired of guessing, tired of misinformation, 
-              and tired of being told “not yet” without a path forward.
+              and tired of being told "not yet" without a path forward.
             </p>
 
             <p className="academy-body-lg">
@@ -196,8 +216,8 @@ export default function Academy() {
               icon={<ShieldCheck />}
               title="3. Assets & Savings"
               items={[
-                "What counts — and what doesn’t",
-                "Why “mattress money” hurts outcomes",
+                "What counts — and what doesn't",
+                "Why \"mattress money\" hurts outcomes",
                 "How to prepare funds responsibly",
               ]}
             />
